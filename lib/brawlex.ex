@@ -42,7 +42,7 @@ defmodule Brawlex do
   @spec open_connection(token(), timeout()) :: {:ok, pid()} | {:error, any()}
   def open_connection(token_id, timeout \\ @default_timeout) do
     try do
-      GenServer.call(BrawlBrain, {:new_token, token_id}, timeout)
+      GenServer.call(Brawlex.BrawlBrain, {:new_token, token_id}, timeout)
     catch
       :exit , error -> {:error, error}
     else

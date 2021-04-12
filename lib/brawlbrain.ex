@@ -1,8 +1,10 @@
-defmodule BrawlBrain do
+defmodule Brawlex.BrawlBrain do
   use GenServer
 
 
-
+  def start_link([]) do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
   
   #Callbacks
 
@@ -16,20 +18,9 @@ defmodule BrawlBrain do
   @impl true
   def handle_info(:init_dynsuper, state) do
     
-    child_specs = [%{
-		      id: :supersuper,
-		      start: {DynamicSupervisor, :start_link, %{
-				 strategy: :one_for_one,
-				 max_restarts: 10,
-				 max_seconds: 10,
-			      }},
-		      restart: :temporary,
-		      shutdown: :brutal_kill,
-		      type: :supervisor,
-		      mudule: [DynamicSupervisor]
-		   }]
+    child_specs = {Brawlex.DynamicSupervisor, []}
     
-    {:ok, spid} = Supervisor.start_child(Brawlex.Application, child_specs)
+    {:ok, spid} = Supervisor.start_child(Brawlex.Supervisor, child_specs)
     _sref = Process.monitor(spid)
     {:noreply, {spid, state}}
   end
@@ -64,8 +55,8 @@ defmodule BrawlBrain do
   def handle_call({:new_token, token_id}, _from, state = {spid, {tokens, refs}}) do
     case tokens[token_id] do
       nil ->
-	child_specs = {token_id, {TokenProcess, :start_link, [token_id]}}
-	case DynamicSupervisor.start_child(spid, child_specs) do
+	#child_specs = {token_id, {Brawlex.TokenProcess, :start_link, [token_id]}}
+	case DynamicSupervisor.start_child(spid, {Brawlex.TokenProcess, token_id}) do
 	  {:ok, child} ->
 	    ref_child = Process.monitor(child)
 	    new_tokens = Map.put(tokens, token_id, ref_child)
@@ -99,6 +90,14 @@ defmodule BrawlBrain do
   @impl true
   def handle_cast(_msg, state) do
     {:noreply, state}
+  end
+
+
+
+  ### Interface ###
+
+  def close_connection(_token_id) do
+    GenServer.cast(Brawlex.BrawlBrain, :close)
   end
 
 

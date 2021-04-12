@@ -9,6 +9,7 @@ defmodule Brawlex.Application do
     children = [
       # Starts a worker by calling: Brawlex.Worker.start_link(arg)
       # {Brawlex.Worker, arg}
+      {Brawlex.Supervisor, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
