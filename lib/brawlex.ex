@@ -63,8 +63,8 @@ defmodule Brawlex do
   Shutdown the token_process.
   """
   @spec close_connection(pid()) :: :ok
-  def close_connection(bpid) do
-    GenServer.cast(bpid, :close)
+  def close_connection(tpid) do
+    Brawlex.TokenProcess.close_connection(tpid)
   end
 
   @doc """
@@ -72,13 +72,7 @@ defmodule Brawlex do
   """
   @spec get_brawlers(pid(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_brawlers(bpid, timeout \\ @default_timeout) do
-    try do
-      GenServer.call(bpid, {:brawlers}, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      res -> {:ok, res}
-    end
+    Brawlex.TokenProcess.get_brawlers(bpid, timeout)
   end
 
   @doc """

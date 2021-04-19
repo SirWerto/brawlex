@@ -8,9 +8,13 @@ defmodule Brawlex.Supervisor do
   @impl true
   def init(:ok) do
     children = [
+      {Finch, [name: BrawlerFinch]},
       {Brawlex.BrawlBrain, []}
     ]
     
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
+
+
+

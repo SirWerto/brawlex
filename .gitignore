@@ -24,3 +24,6 @@ brawlex-*.tar
 
 # Ignore emacs files
 *~
+
+# Ignore token_test.txt
+/test/token_test.txt
