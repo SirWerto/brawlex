@@ -92,13 +92,7 @@ defmodule Brawlex do
   """
   @spec get_brawler(pid(), String.t(), timeout()) :: {:ok, map()} | {:error, any()}
   def get_brawler(bpid, brawler_id, timeout \\ @default_timeout) do
-    try do
-      GenServer.call(bpid, {:brawler, brawler_id}, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      res -> {:ok, res}
-    end
+    Brawlex.TokenProcess.get_brawler(bpid, brawler_id, timeout)
   end
 
   @doc """
