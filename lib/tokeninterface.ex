@@ -13,9 +13,9 @@ defmodule Brawlex.TokenInterface do
   end
 
   @spec get_brawler(pid(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_brawler(tpid, id, timeout \\ 5000) do
+  def get_brawler(tpid, brawler_id, timeout \\ 5000) do
     try do
-      GenServer.call(tpid, {:brawler, id}, timeout)
+      GenServer.call(tpid, {:brawler, brawler_id}, timeout)
     catch
       :exit , error -> {:error, error}
     else
@@ -24,10 +24,10 @@ defmodule Brawlex.TokenInterface do
     end
   end
 
-  @spec get_ranking_players(pid(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_players(tpid, id, timeout \\ 5000) do
+  @spec get_ranking_players(pid(), Brawlex.country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_players(tpid, country_c, timeout \\ 5000) do
     try do
-      GenServer.call(tpid, {:ranking_players, id}, timeout)
+      GenServer.call(tpid, {:ranking_players, country_c}, timeout)
     catch
       :exit , error -> {:error, error}
     else
@@ -36,10 +36,10 @@ defmodule Brawlex.TokenInterface do
     end
   end
 
-  @spec get_ranking_clubs(pid(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_clubs(tpid, id, timeout \\ 5000) do
+  @spec get_ranking_clubs(pid(), Brawlex.country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_clubs(tpid, country_c, timeout \\ 5000) do
     try do
-      GenServer.call(tpid, {:ranking_clubs, id}, timeout)
+      GenServer.call(tpid, {:ranking_clubs, country_c}, timeout)
     catch
       :exit , error -> {:error, error}
     else
@@ -48,10 +48,10 @@ defmodule Brawlex.TokenInterface do
     end
   end
 
-  @spec get_ranking_brawlers(pid(), String.t(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_brawlers(tpid, country_code, brawler_id, timeout \\ 5000) do
+  @spec get_ranking_brawlers(pid(), Brawlex.country_code(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_brawlers(tpid, country_c, brawler_id, timeout \\ 5000) do
     try do
-      GenServer.call(tpid, {:ranking_brawlers, country_code, brawler_id}, timeout)
+      GenServer.call(tpid, {:ranking_brawlers, country_c, brawler_id}, timeout)
     catch
       :exit , error -> {:error, error}
     else
@@ -60,7 +60,7 @@ defmodule Brawlex.TokenInterface do
     end
   end
 
-  @spec get_ranking_seasons(pid(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  @spec get_ranking_seasons(pid(), Brawlex.country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_ranking_seasons(tpid, country_c, timeout \\ 5000) do
     try do
       GenServer.call(tpid, {:ranking_seasons, country_c}, timeout)
@@ -72,7 +72,7 @@ defmodule Brawlex.TokenInterface do
     end
   end
 
-  @spec get_ranking_season(pid(), String.t(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  @spec get_ranking_season(pid(), Brawlex.country_code(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_ranking_season(tpid, country_c, season_id, timeout \\ 5000) do
     try do
       GenServer.call(tpid, {:ranking_season, country_c, season_id}, timeout)
