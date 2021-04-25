@@ -102,6 +102,50 @@ defmodule Brawlex.TokenProcess do
     end
   end
 
+  def handle_call({:club, club_tag}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "clubs/" <> club_tag, headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_single(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  def handle_call({:club_members, club_tag}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "clubs/" <> club_tag <> "/members", headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_multiple(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  def handle_call({:player, player_tag}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "players/" <> player_tag, headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_single(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  def handle_call({:player_battlelog, player_tag}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "players/" <> player_tag <> "/battlelog", headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_multiple(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
   @impl true
   def handle_call(_msg, _from, token_id) do
     {:noreply, token_id}

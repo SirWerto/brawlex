@@ -95,16 +95,6 @@ defmodule Brawlex do
     Brawlex.TokenInterface.get_brawler(bpid, brawler_id, timeout)
   end
 
-  @doc """
-  Same as `get_brawler` but raise `Brawlex.Error` in case of fail.
-  """
-  @spec get_brawler!(pid(), String.t(), timeout()) :: {:ok, map()} | {:error, any()}
-  def get_brawler!(bpid, brawler_id, timeout \\ @default_timeout) do
-    case get_brawler(bpid, brawler_id, timeout) do
-      {:ok, res} -> res
-      _ -> {:error, :vacio_por_ahora}
-    end
-  end
 
   @doc """
   Get club rankings for a country or global rankings.
@@ -141,23 +131,23 @@ defmodule Brawlex do
   end
 
   @spec get_club(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_club(bpid, club_tag, timeout \\ @default_timeout) do
-    :paco
+  def get_club(tpid, club_tag, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_club(tpid, club_tag, timeout)
   end
 
-  @spec get_club_members(pid(), tag(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_club_members(bpid, club_tag, limit, timeout \\ @default_timeout) do
-    :paco
+  @spec get_club_members(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_club_members(tpid, club_tag, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_club_members(tpid, club_tag, timeout)
   end
 
   @spec get_player(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_player(bpid, player_tag, timeout \\ @default_timeout) do
-    :paco
+  def get_player(tpid, player_tag, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_player(tpid, player_tag, timeout)
   end
 
-  @spec get_player_battlelog(pid(), tag(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_player_battlelog(bpid, player_tag, limit, timeout \\ @default_timeout) do
-    :paco
+  @spec get_player_battlelog(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_player_battlelog(tpid, player_tag, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_player_battlelog(tpid, player_tag, timeout)
   end
 
 end
