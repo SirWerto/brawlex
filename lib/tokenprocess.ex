@@ -44,6 +44,63 @@ defmodule Brawlex.TokenProcess do
     end
   end
 
+  @impl true
+  def handle_call({:ranking_players, country_code}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "rankings/" <> country_code <> "/players", headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_ranking_players(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  @impl true
+  def handle_call({:ranking_clubs, country_code}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "rankings/" <> country_code <> "/clubs", headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_ranking_clubs(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  @impl true
+  def handle_call({:ranking_brawlers, country_code, brawler_id}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "rankings/" <> country_code <> "/brawlers/" <> brawler_id, headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_multiple(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  def handle_call({:ranking_seasons, country_code}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "rankings/" <> country_code <> "/powerplay/seasons", headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_multiple(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
+
+  def handle_call({:ranking_season, country_code, season_id}, _from, {token_id, headers}) do
+    case Finch.build(:get, @url_api <> "rankings/" <> country_code <> "/powerplay/seasons/" <> season_id, headers) |> Finch.request(BrawlerFinch) do
+      {:ok, response} ->
+	case Brawlex.Parse.get_multiple(response) do
+	  {:ok, data} -> {:reply, {:ok, data}, {token_id, headers}}
+	  {:error, reason} -> {:reply, {:error, reason}, {token_id, headers}}
+	end
+      any -> {:reply, {:error, any}, {token_id, headers}}
+    end
+  end
 
   @impl true
   def handle_call(_msg, _from, token_id) do
@@ -62,39 +119,6 @@ defmodule Brawlex.TokenProcess do
   def handle_cast(_msg, token_id) do
     {:noreply, token_id}
   end
-
-
-#### INTERFAZE
-
-
-  @spec get_brawlers(pid(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_brawlers(tpid, timeout \\ 5000) do
-    try do
-      GenServer.call(tpid, :brawlers, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      {:ok, res} -> {:ok, res}
-    end
-  end
-
-  @spec get_brawler(pid(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_brawler(tpid, id, timeout \\ 5000) do
-    try do
-      GenServer.call(tpid, {:brawler, id}, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      {:ok, res} -> {:ok, res}
-    end
-  end
-
-
-  @spec close_connection(pid()) :: :ok
-  def close_connection(tpid) do
-    GenServer.cast(tpid, :close)
-  end
-
 
 
 end

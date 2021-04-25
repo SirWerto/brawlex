@@ -64,7 +64,7 @@ defmodule Brawlex do
   """
   @spec close_connection(pid()) :: :ok
   def close_connection(tpid) do
-    Brawlex.TokenProcess.close_connection(tpid)
+    Brawlex.TokenInterface.close_connection(tpid)
   end
 
   @doc """
@@ -72,7 +72,7 @@ defmodule Brawlex do
   """
   @spec get_brawlers(pid(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_brawlers(bpid, timeout \\ @default_timeout) do
-    Brawlex.TokenProcess.get_brawlers(bpid, timeout)
+    Brawlex.TokenInterface.get_brawlers(bpid, timeout)
   end
 
   @doc """
@@ -92,7 +92,7 @@ defmodule Brawlex do
   """
   @spec get_brawler(pid(), String.t(), timeout()) :: {:ok, map()} | {:error, any()}
   def get_brawler(bpid, brawler_id, timeout \\ @default_timeout) do
-    Brawlex.TokenProcess.get_brawler(bpid, brawler_id, timeout)
+    Brawlex.TokenInterface.get_brawler(bpid, brawler_id, timeout)
   end
 
   @doc """
@@ -109,66 +109,35 @@ defmodule Brawlex do
   @doc """
   Get club rankings for a country or global rankings.
   """
-  @spec get_ranking_clubs(pid(), country_code(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_clubs(bpid, country_c, limit, timeout \\ @default_timeout) do
-    try do
-      GenServer.call(bpid, {:ranking_clubs, country_c, limit}, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      res -> {:ok, res}
-    end
+  @spec get_ranking_clubs(pid(), country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_clubs(tpid, country_c, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_ranking_clubs(tpid, country_c, timeout)
   end
 
-  @doc """
-  Same as `get_ranking_clubs` but raise `Brawlex.Error` in case of fail.
-  """
-  @spec get_ranking_clubs!(pid(), country_code(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_clubs!(bpid, country_c, limit, timeout \\ @default_timeout) do
-    case get_ranking_clubs(bpid, country_c, limit, timeout) do
-      {:ok, res} -> res
-      _ -> {:error, :vacio_por_ahora}
-    end
-  end
 
   @doc """
   Get player rankings for a country or global rankings.
   """
-  @spec get_ranking_players(pid(), country_code(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_players(bpid, country_c, limit, timeout \\ @default_timeout) do
-    try do
-      GenServer.call(bpid, {:ranking_players, country_c, limit}, timeout)
-    catch
-      :exit , error -> {:error, error}
-    else
-      res -> {:ok, res}
-    end
+  @spec get_ranking_players(pid(), country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_players(tpid, country_c, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_ranking_players(tpid, country_c, timeout)
   end
 
-  @doc """
-  Same as `get_ranking_players` but raise `Brawlex.Error` in case of fail.
-  """
-  @spec get_ranking_players!(pid(), country_code(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_players!(bpid, country_c, limit, timeout \\ @default_timeout) do
-    case get_ranking_players(bpid, country_c, limit, timeout) do
-      {:ok, res} -> res
-      _ -> {:error, :vacio_por_ahora}
-    end
+
+
+  @spec get_ranking_brawlers(pid(), country_code(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_brawlers(tpid, country_c, brawler_id, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_ranking_brawlers(tpid, country_c, brawler_id, timeout)
   end
 
-  @spec get_ranking_brawlers(pid(), country_code(), String.t(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_brawlers(bpid, country_c, brawler_id, limit, timeout \\ @default_timeout) do
-    :paco
+  @spec get_ranking_seasons(pid(), country_code(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_seasons(tpid, country_c, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_ranking_seasons(tpid, country_c, timeout)
   end
 
-  @spec get_ranking_seasons(pid(), country_code(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_seasons(bpid, country_c, limit, timeout \\ @default_timeout) do
-    :paco
-  end
-
-  @spec get_ranking_season(pid(), country_code(), String.t(), pos_integer(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_ranking_season(bpid, country_c, season_id, limit, timeout \\ @default_timeout) do
-    :paco
+  @spec get_ranking_season(pid(), country_code(), String.t(), timeout()) :: {:ok, list(map())} | {:error, any()}
+  def get_ranking_season(tpid, country_c, season_id, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_ranking_season(tpid, country_c, season_id, timeout)
   end
 
   @spec get_club(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
