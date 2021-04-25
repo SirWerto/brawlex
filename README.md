@@ -1,6 +1,5 @@
 # Brawlex
 
-**TODO: Add description**
 Api client for Brawl Stars API
 
 ## Installation
@@ -20,8 +19,9 @@ end
 
 First of all, you need a Token binding to your current IP. Get one here  https://developer.brawlstars.com.
 
-Secon, this is an application, so it is necesary to start it before start doing requests
-go to mix.exs and append it:
+Second, this is an application, so it is necesary to start it before start doing requests.
+
+Go to mix.exs and append it:
 
 ```elixir
   def application do
