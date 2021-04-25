@@ -11,10 +11,7 @@ defmodule Brawlex.Supervisor do
       {Finch, [name: BrawlerFinch]},
       {Brawlex.BrawlBrain, []}
     ]
-    
+
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
-
-
-

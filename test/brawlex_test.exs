@@ -7,7 +7,6 @@ defmodule BrawlexTest do
     {:ok, token: token_id}
   end
 
-
   test "create tokenprocess", context do
     {:ok, tpid} = Brawlex.open_connection(context[:token])
     assert Kernel.is_pid(tpid)
@@ -23,15 +22,13 @@ defmodule BrawlexTest do
     {:ok, tpid} = Brawlex.open_connection(context[:token])
     ref = Process.monitor(tpid)
     :ok = Brawlex.close_connection(tpid)
+
     receive do
-      {:DOWN, ^ref, :process, _object, _reason} -> 
-	assert :true
+      {:DOWN, ^ref, :process, _object, _reason} ->
+        assert true
     after
       5_000 ->
-	assert :false
+        assert false
     end
   end
-
-
-
 end
