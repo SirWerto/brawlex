@@ -27,3 +27,6 @@ brawlex-*.tar
 
 # Ignore token_test.txt
 /test/token_test.txt
+
+# Ignore mix.lock
+mix.lock
