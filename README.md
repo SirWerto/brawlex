@@ -1,11 +1,11 @@
 # Brawlex
 
-Api client for Brawl Stars API
+Api client for Brawl Stars API.
+You can view the docs [here](https://hexdocs.pm/brawlex/Brawlex.html#content)
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `brawlex` to your list of dependencies in `mix.exs`:
+Add `brawlex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -38,8 +38,4 @@ and now you are ready to use it:)
 
         Brawlex.get_brawlers(tpid)
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/brawlex](https://hexdocs.pm/brawlex).
 
