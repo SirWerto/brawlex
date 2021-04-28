@@ -40,16 +40,16 @@ defmodule Brawlex do
   Get list of available brawlers.
   """
   @spec get_brawlers(pid(), timeout()) :: {:ok, list(map())} | {:error, any()}
-  def get_brawlers(bpid, timeout \\ @default_timeout) do
-    Brawlex.TokenInterface.get_brawlers(bpid, timeout)
+  def get_brawlers(tpid, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_brawlers(tpid, timeout)
   end
 
   @doc """
   Get information about a brawler.
   """
   @spec get_brawler(pid(), String.t(), timeout()) :: {:ok, map()} | {:error, any()}
-  def get_brawler(bpid, brawler_id, timeout \\ @default_timeout) do
-    Brawlex.TokenInterface.get_brawler(bpid, brawler_id, timeout)
+  def get_brawler(tpid, brawler_id, timeout \\ @default_timeout) do
+    Brawlex.TokenInterface.get_brawler(tpid, brawler_id, timeout)
   end
 
   @doc """
@@ -79,33 +79,51 @@ defmodule Brawlex do
     Brawlex.TokenInterface.get_ranking_brawlers(tpid, country_c, brawler_id, timeout)
   end
 
+  @doc """
+  Get list of power play seasons for a country or global rankings.
+  """
   @spec get_ranking_seasons(pid(), country_code(), timeout()) ::
           {:ok, list(map())} | {:error, any()}
   def get_ranking_seasons(tpid, country_c, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_ranking_seasons(tpid, country_c, timeout)
   end
 
+  @doc """
+  Get power play rankings for a country or global rankings. 'latest' can be used as seasonId to get rankings for the latest season.
+  """
   @spec get_ranking_season(pid(), country_code(), String.t(), timeout()) ::
           {:ok, list(map())} | {:error, any()}
   def get_ranking_season(tpid, country_c, season_id, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_ranking_season(tpid, country_c, season_id, timeout)
   end
 
+  @doc """
+  Get information about a single clan by club tag. 
+  """
   @spec get_club(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_club(tpid, club_tag, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_club(tpid, club_tag, timeout)
   end
 
+  @doc """
+  List club members.
+  """
   @spec get_club_members(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_club_members(tpid, club_tag, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_club_members(tpid, club_tag, timeout)
   end
 
+  @doc """
+  Get information about a single player by player tag. 
+  """
   @spec get_player(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_player(tpid, player_tag, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_player(tpid, player_tag, timeout)
   end
 
+  @doc """
+  Get list of recent battle results for a player. NOTE: It may take up to 30 minutes for a new battle to appear in the battlelog.
+  """
   @spec get_player_battlelog(pid(), tag(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_player_battlelog(tpid, player_tag, timeout \\ @default_timeout) do
     Brawlex.TokenInterface.get_player_battlelog(tpid, player_tag, timeout)

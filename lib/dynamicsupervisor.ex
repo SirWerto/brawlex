@@ -1,5 +1,6 @@
 defmodule Brawlex.DynamicSupervisor do
   use DynamicSupervisor
+  @moduledoc false
 
   def start_link(init_arg) do
     DynamicSupervisor.start_link(__MODULE__, init_arg, [])

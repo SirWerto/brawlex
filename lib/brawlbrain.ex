@@ -1,5 +1,6 @@
 defmodule Brawlex.BrawlBrain do
   use GenServer
+  @moduledoc false
 
   def start_link([]) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)

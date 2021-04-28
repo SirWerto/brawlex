@@ -1,5 +1,6 @@
 defmodule Brawlex.TokenProcess do
   use GenServer
+  @moduledoc false
 
   @url_api "https://api.brawlstars.com/v1/"
 

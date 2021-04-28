@@ -1,4 +1,8 @@
 defmodule Brawlex.TokenInterface do
+
+
+  @moduledoc false
+
   @spec get_brawlers(pid(), timeout()) :: {:ok, list(map())} | {:error, any()}
   def get_brawlers(tpid, timeout \\ 5000) do
     try do
