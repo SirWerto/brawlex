@@ -2,24 +2,20 @@ defmodule BrawlexTest do
   use ExUnit.Case
   doctest Brawlex
 
-  setup_all do
-    {:ok, token_id} = File.read("test/token_test.txt")
-    {:ok, token: token_id}
-  end
 
-  test "create tokenprocess", context do
-    {:ok, tpid} = Brawlex.open_connection(context[:token])
+  test "create tokenprocess" do
+    {:ok, tpid} = Brawlex.open_connection("some_token")
     assert Kernel.is_pid(tpid)
   end
 
-  test "same key, same tokenprocess", context do
-    {:ok, tpid1} = Brawlex.open_connection(context[:token])
-    {:ok, tpid2} = Brawlex.open_connection(context[:token])
+  test "same key, same tokenprocess" do
+    {:ok, tpid1} = Brawlex.open_connection("some_token")
+    {:ok, tpid2} = Brawlex.open_connection("some_token")
     assert tpid1 == tpid2
   end
 
-  test "close tokenprocess", context do
-    {:ok, tpid} = Brawlex.open_connection(context[:token])
+  test "close tokenprocess" do
+    {:ok, tpid} = Brawlex.open_connection("some_token")
     ref = Process.monitor(tpid)
     :ok = Brawlex.close_connection(tpid)
 
@@ -31,4 +27,15 @@ defmodule BrawlexTest do
         assert false
     end
   end
+
+  test "ensure brawlbrain close tokenprocess" do
+    {:ok, tpid} = Brawlex.open_connection("some_token")
+    :ok = Brawlex.close_connection(tpid)
+
+    Process.sleep(5_000)
+    {:ok, tpid2} = Brawlex.open_connection("some_token")
+
+    assert tpid != tpid2
+  end
+
 end
