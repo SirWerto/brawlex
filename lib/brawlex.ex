@@ -21,12 +21,13 @@ defmodule Brawlex do
   @default_timeout 5000
 
   @doc """
-  Call the BrawlBrain to set up a new token_process for requests. If the token is alredy in use, just reference to it. Return `{:ok, pid}` in case of success or `{:error, reason}` in fail case.
+  Call the BrawlBrain to set up a new token_process for requests. If the token is alredy in use and allow_duplicates is `false`, just reference to it. Return `{:ok, pid}` in case of success or `{:error, reason}` in fail case.
   """
-  @spec open_connection(token(), timeout()) :: {:ok, pid()} | {:error, any()}
-  def open_connection(token_id, timeout \\ @default_timeout) do
-    Brawlex.BrawlBrain.open_connection(token_id, timeout)
+  @spec open_connection(token(), boolean(), timeout()) :: {:ok, pid()} | {:error, any()}
+  def open_connection(token_id, allow_duplicates, timeout \\ @default_timeout) do
+    Brawlex.BrawlBrain.open_connection(token_id, allow_duplicates, timeout)
   end
+
 
   @doc """
   Shutdown the token_process.
